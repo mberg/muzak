@@ -145,6 +145,21 @@ spogo search track "ambient piano" --limit 10 --json \
 sonos open --name "Office" "spotify:playlist:$PL"
 ```
 
+**Build a playlist from many distinct searches (curated list):**
+`spogo playlist add` takes variadic `<tracks>...` — one call, many URIs. Always batch the add. The expensive/rate-limited part is the per-track searches, which must be **sequential** (see gotcha below).
+```bash
+PL=$(spogo playlist create "80 hits" --json | jq -r '.id')
+URIS=()
+for query in \
+  'track:"Take On Me" artist:"a-ha"' \
+  'track:"Tainted Love" artist:"Soft Cell"' \
+  'track:"99 Luftballons" artist:"Nena"'
+do
+  URIS+=("$(spogo search track "$query" --limit 1 --json | jq -r '.items[0].uri')")
+done
+spogo playlist add "$PL" "${URIS[@]}"   # single batched call
+```
+
 ## Gotchas and things to know
 
 - **Two different JSON flags.** `sonos --format json` vs `spogo --json`. Mixing them up gives plain text and breaks pipelines.
@@ -154,6 +169,7 @@ sonos open --name "Office" "spotify:playlist:$PL"
 - **`play-url` ≠ `open`.** `sonos open` is for Spotify items via the linked Sonos service. `sonos play-url` runs a local proxy and pipes arbitrary web audio (YouTube, etc.) through it. Use `play-url` for non-Spotify URLs and `open`/`play spotify` for Spotify.
 - **spogo `play` controls Spotify Connect**, not Sonos. `spogo play <track>` plays on the user's *currently active Spotify device* (their phone, laptop). To play on Sonos use `sonos`. Don't conflate them.
 - **Cookie auth can expire.** If spogo starts erroring, re-run `spogo auth status`; the user may need to re-import.
+- **Don't fan out `spogo search` in parallel.** Spotify's internal endpoints will 429 ("API rate limit exceeded") if you fire many search calls concurrently — even ~5 at once is enough to trip it, and the cooldown is ~60–90s, which is far slower than just running them sequentially in the first place. Run searches in a serial loop. The variadic `spogo playlist add <playlist> <uri1> <uri2> ...` is the right place to batch — searches stay serial, the write is one call.
 - **Don't mass-modify library/playlists without confirming.** Adding 3 tracks: fine. Removing all saved tracks, deleting playlists: confirm first. These are destructive on a shared external account.
 - **Discovery is fast but not free.** Per call. If running many commands in a script, set `--ip` or `sonos config set defaultRoom "..."` to skip discovery.
 
