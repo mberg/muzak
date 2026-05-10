@@ -1,0 +1,32 @@
+{
+  "name": "muzak",
+  "id": "muzak",
+  "owner": {
+    "name": "mberg"
+  },
+  "metadata": {
+    "description": "Claude Code skill bundling sonoscli + spogo to control Sonos speakers and Spotify from one place.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "muzak",
+      "source": "./",
+      "description": "Drive Sonos speakers (sonoscli) and Spotify (spogo) together from Claude. Composition pattern, decision tree, full command reference.",
+      "version": "0.1.0",
+      "author": {
+        "name": "mberg"
+      },
+      "keywords": [
+        "sonos",
+        "spotify",
+        "music",
+        "audio",
+        "sonoscli",
+        "spogo",
+        "speakers"
+      ],
+      "category": "workflow"
+    }
+  ]
+}

@@ -30,8 +30,9 @@ if ! curl -fsSL "$TARBALL_URL" | tar -xz -C "$TMP"; then
 fi
 
 SRC="$(find "$TMP" -maxdepth 1 -type d -name "muzak-*" | head -1)"
-if [ -z "$SRC" ] || [ ! -f "$SRC/SKILL.md" ]; then
-  echo "Couldn't find SKILL.md in downloaded archive" >&2
+SKILL_SRC="$SRC/skills/muzak"
+if [ -z "$SRC" ] || [ ! -f "$SKILL_SRC/SKILL.md" ]; then
+  echo "Couldn't find skills/muzak/SKILL.md in downloaded archive" >&2
   exit 1
 fi
 
@@ -43,8 +44,8 @@ fi
 mkdir -p "$DEST"
 
 # Copy only what the skill needs at runtime.
-cp "$SRC/SKILL.md" "$DEST/SKILL.md"
-[ -d "$SRC/references" ] && cp -R "$SRC/references" "$DEST/references"
+cp "$SKILL_SRC/SKILL.md" "$DEST/SKILL.md"
+[ -d "$SKILL_SRC/references" ] && cp -R "$SKILL_SRC/references" "$DEST/references"
 
 ok "Skill installed: $DEST/SKILL.md"
 

@@ -9,19 +9,40 @@ The skill explains when to reach for which tool, how to compose them through Spo
 
 ## Install
 
-One-liner — downloads the skill into `~/.claude/skills/muzak/` and checks for the two CLI deps:
+### As a Claude Code plugin (recommended)
+
+This repo doubles as a Claude Code plugin marketplace. Inside Claude Code:
+
+```
+/plugin marketplace add mberg/muzak
+/plugin install muzak@muzak
+```
+
+Then `/reload-plugins` and you're set. The skill activates automatically when you mention music, speakers, or Spotify.
+
+To update later:
+
+```
+/plugin marketplace update muzak
+/plugin install muzak@muzak
+```
+
+### Bare install (no plugin system)
+
+One-liner that drops the skill into `~/.claude/skills/muzak/` and checks for the two CLI deps:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/mberg/muzak/main/install.sh | bash
 ```
 
-Or with `git` if you prefer:
+Or with `git`:
 
 ```bash
-git clone https://github.com/mberg/muzak ~/.claude/skills/muzak
+git clone https://github.com/mberg/muzak.git
+cp -R muzak/skills/muzak ~/.claude/skills/muzak
 ```
 
-Then restart Claude Code (or run `/reload-skills`) to pick it up.
+Then restart Claude Code (or run `/reload-skills`).
 
 ### Prerequisites
 
@@ -30,7 +51,7 @@ brew install steipete/tap/sonoscli
 brew install steipete/tap/spogo
 ```
 
-The installer prints these for you if either is missing.
+The bare installer prints these for you if either is missing.
 
 ## Usage
 
@@ -59,18 +80,32 @@ For the sonos-side Spotify integrations:
 - `sonos play spotify` / `sonos smapi search` use SMAPI — run `sonos auth smapi begin` then `sonos auth smapi complete`.
 - `sonos search spotify` uses the Spotify Web API — set `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`.
 
-You only need one of these working. The skill prefers spogo's cookie auth since it's the lowest friction.
+You only need one working. The skill prefers spogo's cookie auth since it's the lowest friction.
 
-## What's in the skill
+## What's in the repo
 
-- `SKILL.md` — the main guide Claude reads (decision tree, composition pattern, recipes, gotchas)
-- `references/commands.md` — full flag reference for both CLIs
+```
+muzak/
+├── .claude-plugin/
+│   ├── marketplace.json    plugin marketplace listing
+│   └── plugin.json          plugin metadata
+├── skills/
+│   └── muzak/
+│       ├── SKILL.md         the guide Claude reads
+│       └── references/
+│           └── commands.md  full flag reference for both CLIs
+├── install.sh               bare-install fallback
+└── README.md
+```
 
 ## Uninstall
 
-```bash
-rm -rf ~/.claude/skills/muzak
 ```
+/plugin uninstall muzak@muzak
+/plugin marketplace remove muzak
+```
+
+Or for the bare install: `rm -rf ~/.claude/skills/muzak`.
 
 ## License
 

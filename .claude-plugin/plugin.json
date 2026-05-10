@@ -1,0 +1,11 @@
+{
+  "name": "muzak",
+  "description": "Claude Code skill bundling sonoscli + spogo to control Sonos speakers and Spotify from one place. Teaches Claude when to use each CLI, the composition pattern through Spotify URIs, and the gotchas.",
+  "version": "0.1.0",
+  "author": {
+    "name": "mberg"
+  },
+  "license": "MIT",
+  "keywords": ["sonos", "spotify", "music", "audio", "sonoscli", "spogo", "speakers"],
+  "skills": ["./skills/muzak"]
+}
