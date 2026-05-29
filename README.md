@@ -1,6 +1,8 @@
-# muzak
+<img width="1254" height="1254" alt="5f202e77-61f5-444e-9524-55298e6f50e6" src="https://github.com/user-attachments/assets/f3e3cce1-e44f-419d-9f3e-f48fecc274a4" />
 
-A Claude Code skill that teaches Claude how to drive your Sonos speakers and Spotify from the terminal, using two CLIs together:
+# Muzak 
+
+A Claude Code skill you never knew you needed.  Use claude to play music from Spotify to your Sonos speakers from the terminal, using two CLIs together:
 
 - **[sonoscli](https://sonoscli.sh)** (`sonos`) — local Sonos control over UPnP. Discover rooms, play/pause, group, queue, scenes.
 - **[spogo](https://spogo.sh)** (`spogo`) — Spotify CLI authenticated via your browser cookies. Search, library, playlists, devices.
